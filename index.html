@@ -118,13 +118,38 @@
     <h2>Giới thiệu</h2>
     <p>
       Đoạn code cho phép Spotify phát nghệ sĩ yêu thích của bạn (JISOO) theo vòng lặp 
-      và tự động nhấn “bài tiếp theo” sau mỗi 53 giây (cộng thêm một chút ngẫu nhiên). 
+      và tự động nhấn “bài tiếp theo” sau mỗi 33-53-70 giây (cộng thêm một chút ngẫu nhiên). 
       30 giây là thời gian tối thiểu mà một bài hát phải được nghe trước khi Spotify ghi nhận một lượt “phát” (play).
-      Mình làm phiên bản 50 giây và 70 giây để an toàn hơn một xíu.
+      Mình đính kèm bên dưới 3 phiên bản 30 giây, 50 giây và 70 giây (càng dài thì càng an toàn hơn một xíu).
       Mỗi khối mã có nút <strong>Copy</strong> để bạn dễ dàng sao chép và dán vào Console.
     </p>
 
-    <h2>🎀 Mã — Phiên bản 1 (skip bài sau 53 giây)</h2>
+    <h2>🎀 Mã — Phiên bản 1 (skip bài sau 33 giây)</h2>
+    <div class="code-card" aria-label="code-card-1">
+      <button class="copy-btn" aria-label="Copy code 1" onclick="copyCode(this)">Copy</button>
+      <pre><code>
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min);
+}
+
+function doSomething() {
+    var button = document.querySelector('[aria-label=\"Next\"]');
+    button.click();
+}
+
+(function loop() {
+    var rand = getRandomInt(33000, 37000);
+    console.log(rand);
+    setTimeout(function() {
+        doSomething();
+        loop();
+    }, rand);
+}());</code></pre>
+    </div>
+
+    <h2>🎀 Mã — Phiên bản 2 (skip bài sau 53 giây)</h2>
     <div class="code-card" aria-label="code-card-1">
       <button class="copy-btn" aria-label="Copy code 1" onclick="copyCode(this)">Copy</button>
       <pre><code>
@@ -149,7 +174,7 @@ function doSomething() {
 }());</code></pre>
     </div>
 
-    <h2>🎀 Mã — Phiên bản 2 (skip bài sau 70 giây)</h2>
+    <h2>🎀 Mã — Phiên bản 3 (skip bài sau 70 giây)</h2>
     <div class="code-card" aria-label="code-card-2">
       <button class="copy-btn" aria-label="Copy code 2" onclick="copyCode(this)">Copy</button>
       <pre><code>
@@ -174,7 +199,7 @@ function doSomething() {
 }());</code></pre>
     </div>
 
-    <p class="note">Gợi ý: mở DevTools (F12) hoặc "ctrl/command + shift + J" → mở ra Console → dán đoạn mã để thử. </p>
+    <p class="note">Gợi ý: mở DevTools (F12) hoặc "ctrl/command + shift/option + J" → mở ra Console → dán đoạn mã để thử. </p>
   </main>
 
   <footer>
