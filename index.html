@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Let the Spotify Play – Phiên bản Tiếng Việt</title>
+  <style>
+    :root{
+      --pink-bg: #ffd6e7;
+      --card-bg: #fff9fb;
+      --accent: #ff69b4;
+      --text: #5a1a2a;
+    }
+
+    html,body{
+      height:100%;
+      margin:0;
+      padding:0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: var(--pink-bg);
+      color: var(--text);
+    }
+
+    header{
+      text-align:center;
+      padding:28px 16px;
+      background: rgba(255, 240, 246, 0.6);
+      border-bottom: 1px solid rgba(255,182,193,0.6);
+    }
+
+    header h1{
+      margin:0;
+      font-size:1.6rem;
+      color: var(--accent);
+      letter-spacing:0.4px;
+    }
+
+    header p{ margin:6px 0 0; font-size:0.95rem; color:#7a2a4a; }
+
+    main{
+      max-width:900px;
+      margin:34px auto;
+      padding:28px;
+      background: linear-gradient(180deg, rgba(255,250,252,0.95), rgba(255,248,251,0.95));
+      border-radius:16px;
+      box-shadow: 0 8px 30px rgba(170,80,120,0.08);
+    }
+
+    h2{
+      color:#d84c87;
+      margin-top:0;
+    }
+
+    p{ line-height:1.6; font-size:1.05rem; color:#60193a; }
+
+    .code-card{
+      position:relative;
+      background: var(--card-bg);
+      border-radius:12px;
+      padding:16px;
+      margin:20px 0;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+      border:1px solid rgba(200,160,180,0.12);
+      overflow:auto;
+      font-family: "Courier New", Courier, monospace;
+      font-size:0.95rem;
+    }
+
+    .copy-btn{
+      position:absolute;
+      top:12px;
+      right:12px;
+      background: var(--accent);
+      color:white;
+      border:none;
+      padding:8px 12px;
+      border-radius:8px;
+      cursor:pointer;
+      font-weight:600;
+      box-shadow: 0 4px 8px rgba(255,105,180,0.12);
+    }
+    .copy-btn:active{ transform:translateY(1px); }
+
+    pre { margin:0; white-space:pre; }
+    code { display:block; padding-right:18px; }
+
+    footer{
+      margin-top:28px;
+      padding:16px;
+      text-align:center;
+      font-size:0.95rem;
+      color:#7a2a4a;
+      border-top:1px solid rgba(255,182,193,0.4);
+      background: rgba(255, 240, 246, 0.5);
+      border-radius: 0 0 12px 12px;
+    }
+
+    .note {
+      font-size:0.9rem;
+      color:#6a2b44;
+      margin-top:8px;
+    }
+
+    /* responsive */
+    @media (max-width:600px){
+      main{ margin:20px; padding:18px; }
+      header h1{ font-size:1.3rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🎵 JISOO's Spotify on Play 🎵 </h1>
+    <p> Được tạo ra bởi JIKARMA VERIFICATION, phục vụ cho JISOO stans stream.</p>
+  </header>
+
+  <main>
+    <h2>Giới thiệu</h2>
+    <p>
+      Đoạn code cho phép Spotify phát nghệ sĩ yêu thích của bạn (JISOO) theo vòng lặp 
+      và tự động nhấn “bài tiếp theo” sau mỗi 53 giây (cộng thêm một chút ngẫu nhiên). 
+      30 giây là thời gian tối thiểu mà một bài hát phải được nghe trước khi Spotify ghi nhận một lượt “phát” (play).
+      Mình làm phiên bản 50 giây và 70 giây để an toàn hơn một xíu.
+      Mỗi khối mã có nút <strong>Copy</strong> để bạn dễ dàng sao chép và dán vào Console.
+    </p>
+
+    <h2>🎀 Mã — Phiên bản 1 (skip bài sau 53 giây)</h2>
+    <div class="code-card" aria-label="code-card-1">
+      <button class="copy-btn" aria-label="Copy code 1" onclick="copyCode(this)">Copy</button>
+      <pre><code>
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min);
+}
+
+function doSomething() {
+    var button = document.querySelector('[aria-label=\"Next\"]');
+    button.click();
+}
+
+(function loop() {
+    var rand = getRandomInt(53000, 57000);
+    console.log(rand);
+    setTimeout(function() {
+        doSomething();
+        loop();
+    }, rand);
+}());</code></pre>
+    </div>
+
+    <h2>🎀 Mã — Phiên bản 2 (skip bài sau 70 giây)</h2>
+    <div class="code-card" aria-label="code-card-2">
+      <button class="copy-btn" aria-label="Copy code 2" onclick="copyCode(this)">Copy</button>
+      <pre><code>
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min);
+}
+
+function doSomething() {
+    var button = document.querySelector('[aria-label=\"Next\"]');
+    button.click();
+}
+
+(function loop() {
+    var rand = getRandomInt(70000, 75000);
+    console.log(rand);
+    setTimeout(function() {
+        doSomething();
+        loop();
+    }, rand);
+}());</code></pre>
+    </div>
+
+    <p class="note">Gợi ý: mở DevTools (F12) → Console → dán đoạn mã để thử. </p>
+  </main>
+
+  <footer>
+    <div>💗 Cùng stream cho JISOO của chúng ta nhé 💗.</div>
+    <div style="margin-top:8px; font-size:0.9rem; color:#6a2b44;">
+    
+    </div>
+  </footer>
+
+  <script>
+    // Copy-to-clipboard function used by each copy button.
+    function copyCode(button) {
+      try {
+        // tìm thẻ <pre><code> ngay sau nút
+        let container = button.parentElement;
+        let codeEl = container.querySelector('pre code');
+        if (!codeEl) return;
+        let text = codeEl.innerText;
+
+        navigator.clipboard.writeText(text).then(function() {
+          const original = button.innerText;
+          button.innerText = "Đã sao chép!";
+          setTimeout(function() { button.innerText = original; }, 1800);
+        }, function(err) {
+          // fallback: chọn text và execCommand (cũ)
+          let range = document.createRange();
+          range.selectNodeContents(codeEl);
+          let sel = window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+          try {
+            document.execCommand('copy');
+            const original = button.innerText;
+            button.innerText = "Đã sao chép!";
+            setTimeout(function() { button.innerText = original; }, 1800);
+            sel.removeAllRanges();
+          } catch (e) {
+            alert('Không thể sao chép tự động. Vui lòng sao chép thủ công.');
+          }
+        });
+      } catch(e) {
+        alert('Lỗi khi sao chép: ' + e.message);
+      }
+    }
+  </script>
+</body>
+</html>
