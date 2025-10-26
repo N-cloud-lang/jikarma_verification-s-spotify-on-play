@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title> JKV STREAM-ing </title>
+  <style>
+    :root{
+      --pink-bg: #ffd6e7;
+      --card-bg: #fff9fb;
+      --accent: #ff69b4;
+      --text: #5a1a2a;
+    }
+
+    html,body{
+      height:100%;
+      margin:0;
+      padding:0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(-45deg, #ffd6e7, #ffe4ec, #ffc2d4, #ffb6c1);
+      background-size: 400% 400%;
+      animation: gradientMove 12s ease infinite;
+      color: var(--text);
+      overflow-x:hidden;
+    }
+
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    header{
+      text-align:center;
+      padding:28px 16px;
+      background: rgba(255, 240, 246, 0.6);
+      border-bottom: 1px solid rgba(255,182,193,0.6);
+    }
+
+    header h1{
+      margin:0;
+      font-size:1.6rem;
+      color: var(--accent);
+      letter-spacing:0.4px;
+    }
+
+    header p{ margin:6px 0 0; font-size:0.95rem; color:#7a2a4a; }
+
+    main{
+      max-width:900px;
+      margin:34px auto;
+      padding:28px;
+      background: linear-gradient(180deg, rgba(255,250,252,0.95), rgba(255,248,251,0.95));
+      border-radius:16px;
+      box-shadow: 0 8px 30px rgba(170,80,120,0.08);
+      position: relative;
+      z-index: 2;
+    }
+
+    h2{
+      color:#d84c87;
+      margin-top:0;
+    }
+
+    p{ line-height:1.6; font-size:1.05rem; color:#60193a; }
+
+    .code-card{
+      position:relative;
+      background: var(--card-bg);
+      border-radius:12px;
+      padding:16px;
+      margin:20px 0;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+      border:1px solid rgba(200,160,180,0.12);
+      overflow:auto;
+      font-family: "Courier New", Courier, monospace;
+      font-size:0.95rem;
+    }
+
+    .copy-btn{
+      position:absolute;
+      top:12px;
+      right:12px;
+      background: var(--accent);
+      color:white;
+      border:none;
+      padding:8px 12px;
+      border-radius:8px;
+      cursor:pointer;
+      font-weight:600;
+      box-shadow: 0 4px 8px rgba(255,105,180,0.12);
+    }
+    .copy-btn:active{ transform:translateY(1px); }
+
+    pre { margin:0; white-space:pre; }
+    code { display:block; padding-right:18px; }
+
+    footer{
+      margin-top:28px;
+      padding:16px;
+      text-align:center;
+      font-size:0.95rem;
+      color:#7a2a4a;
+      border-top:1px solid rgba(255,182,193,0.4);
+      background: rgba(255, 240, 246, 0.5);
+      border-radius: 0 0 12px 12px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .note {
+      font-size:0.9rem;
+      color:#6a2b44;
+      margin-top:8px;
+    }
+
+    /* Floating bubbles background */
+    .bubbles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .bubbles span {
+      position: absolute;
+      bottom: -150px;
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 182, 193, 0.4);
+      border-radius: 50%;
+      animation: float 10s infinite ease-in;
+    }
+
+    .bubbles span:nth-child(1) {
+      left: 10%;
+      animation-duration: 12s;
+      animation-delay: 0s;
+    }
+    .bubbles span:nth-child(2) {
+      left: 30%;
+      width: 60px;
+      height: 60px;
+      animation-duration: 15s;
+      animation-delay: 2s;
+    }
+    .bubbles span:nth-child(3) {
+      left: 50%;
+      animation-duration: 10s;
+      animation-delay: 4s;
+    }
+    .bubbles span:nth-child(4) {
+      left: 70%;
+      width: 80px;
+      height: 80px;
+      animation-duration: 18s;
+      animation-delay: 1s;
+    }
+    .bubbles span:nth-child(5) {
+      left: 90%;
+      animation-duration: 14s;
+      animation-delay: 3s;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0) scale(1); opacity: 0.8; }
+      100% { transform: translateY(-100vh) scale(1.3); opacity: 0; }
+    }
+
+    /* Hello Kitty animation */
+    .kitty {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 100px;
+      animation: floatKitty 4s ease-in-out infinite;
+      z-index: 5;
+    }
+
+    @keyframes floatKitty {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-15px); }
+      100% { transform: translateY(0px); }
+    }
+/* Floating Hearts Animation */
+.heart {
+  position: fixed;
+  bottom: -50px;
+  font-size: 20px;
+  color: #ff69b4;
+  animation: floatUp 6s linear infinite;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-110vh) scale(1.5);
+    opacity: 0;
+  }
+}
+
+/* Kitty + social menu */
+.kitty-container {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 3;
+}
+
+.kitty {
+  width: 100px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  animation: floatKitty 18s linear infinite;
+}
+
+.kitty:hover {
+  transform: scale(1.08);
+}
+
+.social-links {
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  bottom: 110px;
+  left: 0;
+  background: rgba(255, 240, 250, 0.95);
+  border: 1px solid rgba(255, 182, 193, 0.7);
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+  padding: 10px;
+  animation: fadeIn 0.4s ease;
+}
+
+.social-links a {
+  color: #d84c87;
+  text-decoration: none;
+  font-weight: 600;
+  margin: 6px 0;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: background 0.2s;
+  font-size: 0.95rem;
+}
+
+.social-links a:hover {
+  background: #ffd6e7;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+    /* responsive */
+    @media (max-width:600px){
+      main{ margin:20px; padding:18px; }
+      header h1{ font-size:1.3rem; }
+    }
+
+    .jisoo-floating {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  z-index: 1000;
+  display: inline-block;
+}
+
+/* Floating image button */
+.jisoo-floating {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  z-index: 1000;
+}
+
+.jisoo-floating img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(180, 120, 255, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.jisoo-floating img:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(180, 120, 255, 0.4);
+}
+
+/* The popup menu */
+.jisoo-menu {
+  display: none;
+  position: absolute;
+  bottom: 80px;
+  left: 0;
+  background: rgba(255, 240, 255, 0.95);
+  border: 1px solid rgba(200, 160, 255, 0.4);
+  border-radius: 12px;
+  box-shadow: 0 8px 18px rgba(180, 120, 255, 0.25);
+  padding: 10px 0;
+  text-align: left;
+  min-width: 180px;
+  backdrop-filter: blur(8px);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+}
+
+/* Menu visible animation */
+.jisoo-menu.show {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Menu links */
+.jisoo-menu a {
+  display: block;
+  padding: 8px 16px;
+  color: #6b2d8e;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.jisoo-menu a:hover {
+  background: rgba(210, 160, 255, 0.2);
+  color: #531f74;
+  border-radius: 8px;
+}
+
+/* Language switcher (top right) */
+.lang-switcher {
+  position: fixed;
+  top: 18px;
+  right: 20px;
+  z-index: 1100;
+  display: flex;
+  gap: 8px;
+  background: rgba(255, 240, 250, 0.7);
+  border-radius: 12px;
+  padding: 6px 8px;
+  box-shadow: 0 4px 12px rgba(200, 80, 160, 0.1);
+  backdrop-filter: blur(6px);
+}
+
+.lang-switcher button {
+  background: rgba(255, 182, 193, 0.6);
+  border: none;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-weight: 600;
+  cursor: pointer;
+  color: #6a1b4d;
+  font-family: Inter, sans-serif;
+  transition: all 0.25s ease;
+}
+
+.lang-switcher button:hover {
+  background: #ff69b4;
+  color: white;
+}
+
+.lang-switcher button.active {
+  background: #ff69b4;
+  color: white;
+}
+
+  </style>
+
+<!-- New Release Task Bar -->
+<div id="newReleaseBar">
+  <a href="https://www.youtube.com/watch?v=EN1tMeXQii0" target="_blank">🎤 New Release</a>
+  <img id="releaseHoverImg" src="jisoo3.png" alt="New Release" />
+</div>
+
+<style>
+  #newReleaseBar {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: #ff69b4;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    font-weight: 600;
+    z-index: 1200;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  #newReleaseBar:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+  }
+
+  #newReleaseBar a {
+    color: white;
+    text-decoration: none;
+  }
+
+  /* Hover image */
+  #releaseHoverImg {
+    display: none;
+    position: absolute;
+    top: 50px; /* adjust as needed */
+    right: 0;
+    width: 150px; /* adjust size */
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    z-index: 1300;
+  }
+
+  #newReleaseBar:hover #releaseHoverImg {
+    display: block;
+  }
+</style>
+
+</head>
+<body>
+    <!-- 🌐 Language Switcher -->
+<div class="lang-switcher">
+  <button onclick="setLanguage('en')" id="btn-en">🇬🇧 EN</button>
+  <button onclick="setLanguage('vi')" id="btn-vi">🇻🇳 VN</button>
+</div>
+
+<header>
+ <h1>🎵 JISOO's Spotify on Play 🎵 </h1>
+ <p> Blog được tạo ra bởi <strong>JIKARMA VERIFICATION</strong>, phục vụ cho JISOO stans stream.</p>
+</header>
+<!-- Floating JISOO Button -->
+<div class="jisoo-floating">
+  <img src="jisoo2.png" alt="JISOO" onclick="toggleJisooMenu()" />
+  <div class="jisoo-menu" id="jisooMenu">
+    <a href="https://www.instagram.com/sooyaaa__/" target="_blank">📸 Instagram</a>
+    <a href="https://www.youtube.com/@sooyaaa__" target="_blank">🎬 YouTube</a>
+    <a href="https://www.tiktok.com/@jisoo" target="_blank">🎵 TikTok</a>
+    <a href="https://www.jisoo.io/" target="_blank">💖 Website</a>
+    <a href="https://open.spotify.com/artist/6UZ0ba50XreR4TM8u322gs" target="_blank">🎧 Spotify</a>
+  </div>
+</div>
+  <main>
+<h2 id="intro-title">Giới thiệu</h2>
+<p id="intro-text">
+      Đoạn code cho phép Spotify phát nghệ sĩ yêu thích của bạn (JISOO) theo vòng lặp 
+      và tự động nhấn “bài tiếp theo” sau mỗi 33-53-70 giây (cộng thêm một chút ngẫu nhiên). 
+      30 giây là thời gian tối thiểu mà một bài hát phải được nghe trước khi Spotify ghi nhận một lượt “phát” (play).
+      Mình đính kèm bên dưới 3 phiên bản 30 giây, 50 giây và 70 giây (càng dài thì càng an toàn hơn một xíu).
+      Mỗi khối mã có nút <strong>Copy</strong> để bạn dễ dàng sao chép và dán vào Console.
+</p>
+
+<h2 id="code1-title">🎀 Mã — Phiên bản 1 (skip bài sau 33 giây)</h2>
+    <div class="code-card" aria-label="code-card-1">
+      <button class="copy-btn" aria-label="Copy code 1" onclick="copyCode(this)">Copy</button>
+      <pre><code>
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min);
+}
+
+function doSomething() {
+    var button = document.querySelector('[aria-label=\"Next\"]');
+    button.click();
+}
+
+(function loop() {
+    var rand = getRandomInt(33000, 37000);
+    console.log(rand);
+    setTimeout(function() {
+        doSomething();
+        loop();
+    }, rand);
+}());</code></pre>
+    </div>
+
+<h2 id="code2-title">🎀 Mã — Phiên bản 2 (skip bài sau 53 giây)</h2>
+    <div class="code-card" aria-label="code-card-1">
+      <button class="copy-btn" aria-label="Copy code 1" onclick="copyCode(this)">Copy</button>
+      <pre><code>
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min);
+}
+
+function doSomething() {
+    var button = document.querySelector('[aria-label=\"Next\"]');
+    button.click();
+}
+
+(function loop() {
+    var rand = getRandomInt(53000, 57000);
+    console.log(rand);
+    setTimeout(function() {
+        doSomething();
+        loop();
+    }, rand);
+}());</code></pre>
+    </div>
+
+<h2 id="code3-title">🎀 Mã — Phiên bản 3 (skip bài sau 70 giây)</h2>
+    <div class="code-card" aria-label="code-card-2">
+      <button class="copy-btn" aria-label="Copy code 2" onclick="copyCode(this)">Copy</button>
+      <pre><code>
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min);
+}
+
+function doSomething() {
+    var button = document.querySelector('[aria-label=\"Next\"]');
+    button.click();
+}
+
+(function loop() {
+    var rand = getRandomInt(70000, 75000);
+    console.log(rand);
+    setTimeout(function() {
+        doSomething();
+        loop();
+    }, rand);
+}());</code></pre>
+    </div>
+
+   <p class="note" id="note-text">
+  Gợi ý: mở DevTools (F12) hoặc "ctrl/command + shift/option + J" → mở ra Console → dán đoạn mã để thử.
+</p>
+  </main>
+
+  <footer>
+    <div>💗 Cùng stream cho JISOO của chúng ta nhé 💗</div>
+    <div style="margin-top:8px; font-size:0.9rem; color:#6a2b44;">
+    
+    </div>
+  </footer>
+
+<!-- Floating Hello Kitty with social links -->
+<div class="kitty-container">
+  <img src="hellokitty.png" alt="Hello Kitty" class="kitty" onclick="toggleLinks()">
+  <div class="social-links" id="socialLinks">
+    <a href="https://x.com/jikarmafication" target="_blank">🕊️ X (Twitter)</a>
+    <a href="https://www.instagram.com/jikarma_verification/" target="_blank">📸 Instagram</a>
+    <a href="https://www.tiktok.com/@jikarmaverification" target="_blank">🎶 TikTok</a>
+    <a href="https://www.facebook.com/JikarmaVerification" target="_blank">☁️ Facebook</a>
+  </div>
+</div>
+
+
+  <script>
+    // Copy-to-clipboard function used by each copy button.
+    function copyCode(button) {
+      try {
+        // tìm thẻ <pre><code> ngay sau nút
+        let container = button.parentElement;
+        let codeEl = container.querySelector('pre code');
+        if (!codeEl) return;
+        let text = codeEl.innerText;
+
+        navigator.clipboard.writeText(text).then(function() {
+          const original = button.innerText;
+          button.innerText = "Đã sao chép!";
+          setTimeout(function() { button.innerText = original; }, 1800);
+        }, function(err) {
+          // fallback: chọn text và execCommand (cũ)
+          let range = document.createRange();
+          range.selectNodeContents(codeEl);
+          let sel = window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+          try {
+            document.execCommand('copy');
+            const original = button.innerText;
+            button.innerText = "Đã sao chép!";
+            setTimeout(function() { button.innerText = original; }, 1800);
+            sel.removeAllRanges();
+          } catch (e) {
+            alert('Không thể sao chép tự động. Vui lòng sao chép thủ công.');
+          }
+        });
+      } catch(e) {
+        alert('Lỗi khi sao chép: ' + e.message);
+      }
+    }
+  </script>
+   <script>
+  // Floating hearts generator
+  function createHeart() {
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerText = "💗";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = (Math.random() * 20 + 10) + "px";
+    heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 6000);
+  }
+  setInterval(createHeart, 400);
+</script>
+<script>
+  // Toggle the social links popup
+  function toggleLinks() {
+    const links = document.getElementById("socialLinks");
+    links.style.display = links.style.display === "flex" ? "none" : "flex";
+  }
+
+  // Optional: close menu when clicking elsewhere
+  document.addEventListener("click", function(e) {
+    const kitty = document.querySelector(".kitty");
+    const links = document.getElementById("socialLinks");
+    if (!kitty.contains(e.target) && !links.contains(e.target)) {
+      links.style.display = "none";
+    }
+  });
+</script>
+
+<script>
+  function toggleJisooMenu() {
+    const menu = document.getElementById('jisooMenu');
+    menu.classList.toggle('show');
+  }
+
+  // Hide menu when clicking outside
+  document.addEventListener('click', function (event) {
+    const menu = document.getElementById('jisooMenu');
+    const button = document.querySelector('.jisoo-floating img');
+    if (menu && !menu.contains(event.target) && !button.contains(event.target)) {
+      menu.classList.remove('show');
+    }
+  });
+</script>
+
+<script>
+  function setLanguage(lang) {
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  document.getElementById('btn-vi').classList.toggle('active', lang === 'vi');
+
+  if (lang === 'en') {
+    document.querySelector('header h1').innerText = "🎶 JISOO's Spotify on Play 🎶";
+    document.querySelector('header p').innerHTML = 
+      "A fan-made page by <strong>JIKARMA VERIFICATION</strong> to facilitate JISOO stans' streaming process.";
+
+    // Use IDs for intro
+    document.getElementById('intro-title').innerText = "Introduction";
+    document.getElementById('intro-text').innerHTML = `
+      The code allows Spotify to play your favorite artist (JISOO) on a loop and automatically click “next track” every 33–53–70 seconds (with a bit of randomness). 30 seconds is the minimum time a song needs to be played before Spotify counts it as a “play.” I’ve attached below three versions — 30 seconds, 50 seconds, and 70 seconds (the longer versions are slightly safer to use). Each code block includes Copy button so you can easily copy and paste it into the Console.
+    `;
+    document.getElementById('code1-title').innerText = "💟 Code — Version 1.0 (skip after 33 seconds)";
+    document.getElementById('code2-title').innerText = "💟 Code — Version 2.0 (skip after 53 seconds)";
+    document.getElementById('code3-title').innerText = "💟 Code — Version 3.0 (skip after 70 seconds)";
+    document.querySelector('footer div').innerText = "💗 Let's work hard for our JISOO 💗";
+
+  } else {
+    document.querySelector('header h1').innerText = "🎵 JISOO's Spotify on Play 🎵";
+    document.querySelector('header p').innerHTML = 
+      "Blog được tạo ra bởi <strong>JIKARMA VERIFICATION</strong>, phục vụ cho JISOO stans stream.";
+
+    document.getElementById('intro-title').innerText = "Giới thiệu";
+    document.getElementById('intro-text').innerHTML = `
+      Đoạn code cho phép Spotify phát nghệ sĩ yêu thích của bạn (JISOO) theo vòng lặp 
+      và tự động nhấn “bài tiếp theo” sau mỗi 33-53-70 giây (cộng thêm một chút ngẫu nhiên). 
+      30 giây là thời gian tối thiểu mà một bài hát phải được nghe trước khi Spotify ghi nhận một lượt “phát” (play).
+      Mình đính kèm bên dưới 3 phiên bản 30 giây, 50 giây và 70 giây (càng dài thì càng an toàn hơn một xíu).
+      Mỗi khối mã có nút <strong>Copy</strong> để bạn dễ dàng sao chép và dán vào Console.
+    `;
+    document.getElementById('code1-title').innerText = "🎀 Mã — Phiên bản 1 (skip bài sau 33 giây)";
+    document.getElementById('code2-title').innerText = "🎀 Mã — Phiên bản 2 (skip bài sau 53 giây)";
+    document.getElementById('code3-title').innerText = "🎀 Mã — Phiên bản 3 (skip bài sau 70 giây)";
+
+    document.querySelector('footer div').innerText = "💗 Cùng stream cho JISOO của chúng ta nhé 💗";
+
+  }
+  if (lang === 'en') {
+    // existing translations...
+    document.getElementById('note-text').innerText = 
+      "Tip: Open DevTools (F12) or press 'ctrl/command + shift/option + J' → open the Console → paste the chosen code and enter.";
+} else {
+    // revert to Vietnamese
+    document.getElementById('note-text').innerText = 
+      "Gợi ý: mở DevTools (F12) hoặc \"ctrl/command + shift/option + J\" → mở ra Console → dán đoạn mã để thử.";
+}
+}
+</script>
+
+</body>
+</html>
