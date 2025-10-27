@@ -456,9 +456,9 @@
 <h2 id="intro-title">Giới thiệu</h2>
 <p id="intro-text">
       Đoạn code cho phép Spotify phát nghệ sĩ yêu thích của bạn (JISOO) theo vòng lặp 
-      và tự động nhấn “bài tiếp theo” sau mỗi 33-53-70 giây (cộng thêm một chút ngẫu nhiên). 
+      và tự động nhấn “bài tiếp theo” sau mỗi 33-42-53-70 giây (cộng thêm một chút ngẫu nhiên). 
       30 giây là thời gian tối thiểu mà một bài hát phải được nghe trước khi Spotify ghi nhận một lượt “phát” (play).
-      Mình đính kèm bên dưới 3 phiên bản 30 giây, 50 giây và 70 giây (càng dài thì càng an toàn hơn một xíu).
+      Mình đính kèm bên dưới 4 phiên bản 30 giây, 40 giây, 50 giây và 70 giây (càng dài thì càng an toàn hơn một xíu).
       Mỗi khối mã có nút <strong>Copy</strong> để bạn dễ dàng sao chép và dán vào Console.
 </p>
 
@@ -487,7 +487,32 @@ function doSomething() {
 }());</code></pre>
     </div>
 
-<h2 id="code2-title">🎀 Mã — Phiên bản 2 (skip bài sau 53 giây)</h2>
+<h2 id="code1-title">🎀 Mã — Phiên bản 2 (skip bài sau 42 giây)</h2>
+    <div class="code-card" aria-label="code-card-1">
+      <button class="copy-btn" aria-label="Copy code 1" onclick="copyCode(this)">Copy</button>
+      <pre><code>
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min);
+}
+
+function doSomething() {
+    var button = document.querySelector('[aria-label=\"Next\"]');
+    button.click();
+}
+
+(function loop() {
+    var rand = getRandomInt(42000, 47000);
+    console.log(rand);
+    setTimeout(function() {
+        doSomething();
+        loop();
+    }, rand);
+}());</code></pre>
+    </div>
+    
+<h2 id="code2-title">🎀 Mã — Phiên bản 3 (skip bài sau 53 giây)</h2>
     <div class="code-card" aria-label="code-card-1">
       <button class="copy-btn" aria-label="Copy code 1" onclick="copyCode(this)">Copy</button>
       <pre><code>
@@ -512,7 +537,7 @@ function doSomething() {
 }());</code></pre>
     </div>
 
-<h2 id="code3-title">🎀 Mã — Phiên bản 3 (skip bài sau 70 giây)</h2>
+<h2 id="code3-title">🎀 Mã — Phiên bản 4 (skip bài sau 70 giây)</h2>
     <div class="code-card" aria-label="code-card-2">
       <button class="copy-btn" aria-label="Copy code 2" onclick="copyCode(this)">Copy</button>
       <pre><code>
@@ -657,11 +682,12 @@ function doSomething() {
     // Use IDs for intro
     document.getElementById('intro-title').innerText = "Introduction";
     document.getElementById('intro-text').innerHTML = `
-      The code allows Spotify to play your favorite artist (JISOO) on a loop and automatically click “next track” every 33–53–70 seconds (with a bit of randomness). 30 seconds is the minimum time a song needs to be played before Spotify counts it as a “play.” I’ve attached below three versions — 30 seconds, 50 seconds, and 70 seconds (the longer versions are slightly safer to use). Each code block includes <strong>Copy</strong> button so you can easily copy and paste it into the Console.
+      The code allows Spotify to play your favorite artist (JISOO) on a loop and automatically click “next track” every 33-42–53–70 seconds (with a bit of randomness). 30 seconds is the minimum time a song needs to be played before Spotify counts it as a “play.” I’ve attached below three versions — 30 seconds, 42 seconds, 50 seconds, and 70 seconds (the longer versions are slightly safer to use). Each code block includes <strong>Copy</strong> button so you can easily copy and paste it into the Console.
     `;
     document.getElementById('code1-title').innerText = "💟 Code — Version 1.0 (skip after 33 seconds)";
-    document.getElementById('code2-title').innerText = "💟 Code — Version 2.0 (skip after 53 seconds)";
-    document.getElementById('code3-title').innerText = "💟 Code — Version 3.0 (skip after 70 seconds)";
+    document.getElementById('code2-title').innerText = "💟 Code — Version 2.0 (skip after 42 seconds)";
+    document.getElementById('code2-title').innerText = "💟 Code — Version 3.0 (skip after 53 seconds)";
+    document.getElementById('code3-title').innerText = "💟 Code — Version 4.0 (skip after 70 seconds)";
     document.querySelector('footer div').innerText = "💗 Let's work hard for our JISOO 💗";
 
   } else {
@@ -672,14 +698,15 @@ function doSomething() {
     document.getElementById('intro-title').innerText = "Giới thiệu";
     document.getElementById('intro-text').innerHTML = `
       Đoạn code cho phép Spotify phát nghệ sĩ yêu thích của bạn (JISOO) theo vòng lặp 
-      và tự động nhấn “bài tiếp theo” sau mỗi 33-53-70 giây (cộng thêm một chút ngẫu nhiên). 
+      và tự động nhấn “bài tiếp theo” sau mỗi 33-42-53-70 giây (cộng thêm một chút ngẫu nhiên). 
       30 giây là thời gian tối thiểu mà một bài hát phải được nghe trước khi Spotify ghi nhận một lượt “phát” (play).
-      Mình đính kèm bên dưới 3 phiên bản 30 giây, 50 giây và 70 giây (càng dài thì càng an toàn hơn một xíu).
+      Mình đính kèm bên dưới 3 phiên bản 30 giây, 40 giây, 50 giây và 70 giây (càng dài thì càng an toàn hơn một xíu).
       Mỗi khối mã có nút <strong>Copy</strong> để bạn dễ dàng sao chép và dán vào Console.
     `;
     document.getElementById('code1-title').innerText = "🎀 Mã — Phiên bản 1 (skip bài sau 33 giây)";
-    document.getElementById('code2-title').innerText = "🎀 Mã — Phiên bản 2 (skip bài sau 53 giây)";
-    document.getElementById('code3-title').innerText = "🎀 Mã — Phiên bản 3 (skip bài sau 70 giây)";
+    document.getElementById('code2-title').innerText = "🎀 Mã — Phiên bản 2 (skip bài sau 42 giây)";
+    document.getElementById('code2-title').innerText = "🎀 Mã — Phiên bản 3 (skip bài sau 53 giây)";
+    document.getElementById('code3-title').innerText = "🎀 Mã — Phiên bản 4 (skip bài sau 70 giây)";
 
     document.querySelector('footer div').innerText = "💗 Cùng stream cho JISOO của chúng ta nhé 💗";
 
@@ -700,4 +727,5 @@ function doSomething() {
   
 </body>
 </html>
+
 
