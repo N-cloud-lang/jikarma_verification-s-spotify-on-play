@@ -562,6 +562,52 @@ function doSomething() {
 }());</code></pre>
     </div>
 
+<h2 id="code5-title">🎀 Mã — Phiên bản mix (skip bài thứ hai sau ít nhất 42 giây)</h2>
+    <div class="code-card" aria-label="code-card-2">
+      <button class="copy-btn" aria-label="Copy code 2" onclick="copyCode(this)">Copy</button>
+      <pre><code>
+    function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min);
+}
+
+function clickNext() {
+    const button = document.querySelector('[aria-label="Next"], button[title="Next"]');
+    if (button) {
+        button.click();
+        console.log("Clicked Next");
+    } else {
+        console.warn("Next button not found");
+    }
+}
+
+// true = this song will play full, false = this song will play partial (42–47s)
+let playFull = true;
+
+(function loop() {
+    let waitTime;
+
+    if (playFull) {
+        // full song: assume ~3–4 minutes
+        waitTime = getRandomInt(180000, 240000);
+        console.log(`🎵 Playing full song for ${waitTime / 1000}s`);
+    } else {
+        // short song: 42–47 seconds
+        waitTime = getRandomInt(42000, 47000);
+        console.log(`⏭️ Playing partial song for ${waitTime / 1000}s before skipping`);
+    }
+
+    setTimeout(function() {
+        if (!playFull) {
+            clickNext(); // skip only after short song
+        }
+        playFull = !playFull; // toggle between full and short
+        loop(); // schedule next cycle
+    }, waitTime);
+})(); </code></pre>
+    </div>
+    
    <p class="note" id="note-text">
   Gợi ý: mở DevTools (F12) hoặc "ctrl/command + shift/option + J" → mở ra Console → dán đoạn mã để thử.
 </p>
@@ -688,6 +734,7 @@ function doSomething() {
     document.getElementById('code2-title').innerText = "💟 Code — Version 2.0 (skip after 42 seconds)";
     document.getElementById('code3-title').innerText = "💟 Code — Version 3.0 (skip after 53 seconds)";
     document.getElementById('code4-title').innerText = "💟 Code — Version 4.0 (skip after 70 seconds)";
+    document.getElementById('code5-title').innerText = "💟 Code — Mixed version (skip every second song after at least 42 seconds)";
     document.querySelector('footer div').innerText = "💗 Let's work hard for our JISOO 💗";
 
   } else {
@@ -707,7 +754,7 @@ function doSomething() {
     document.getElementById('code2-title').innerText = "🎀 Mã — Phiên bản 2 (skip bài sau 42 giây)";
     document.getElementById('code3-title').innerText = "🎀 Mã — Phiên bản 3 (skip bài sau 53 giây)";
     document.getElementById('code4-title').innerText = "🎀 Mã — Phiên bản 4 (skip bài sau 70 giây)";
-
+    document.getElementById('code5-title').innerText = "🎀 Mã — Phiên bản mix (skip bài thứ hai sau ít nhất 42 giây)";
     document.querySelector('footer div').innerText = "💗 Cùng stream cho JISOO của chúng ta nhé 💗";
 
   }
@@ -727,6 +774,7 @@ function doSomething() {
   
 </body>
 </html>
+
 
 
 
