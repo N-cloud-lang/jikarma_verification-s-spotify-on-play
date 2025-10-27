@@ -431,6 +431,98 @@
 
 </head>
 <body>
+
+<!-- 🔒 Password Lock Overlay -->
+<div id="passwordOverlay">
+  <div class="password-box">
+    <h2>🌸Enter Password🔒</h2>
+    <input type="password" id="sitePassword" placeholder="Password..." />
+    <button onclick="checkPassword()">Enter</button>
+    <p id="birthdayHint" style="margin-top:10px; color:#f10990;"> Hint: Jisoo's birthday (8 digits, numbers only) </p>
+    <p id="errorMsg" style="color:#da0000; margin-top:10px; display:none;"></p>
+    <p id="attemptsLeft" style="margin-top:10px; color:#d380b6;">3 attempts left  </p>
+  </div>
+</div>
+
+<style>
+  #passwordOverlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(255, 240, 246, 0.96);
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
+
+  .password-box {
+    background: white;
+    border-radius: 16px;
+    padding: 28px 36px;
+    text-align: center;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.15);
+    border: 2px solid #ffb6c1;
+  }
+
+  .password-box h2 {
+    color: #d84c87;
+    margin-bottom: 16px;
+  }
+
+  .password-box input {
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid #ff69b4;
+    outline: none;
+    font-size: 1rem;
+    margin-bottom: 12px;
+  }
+
+  .password-box button {
+    background: #ff69b4;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  .password-box button:hover {
+    background: #ff85c1;
+  }
+</style>
+
+<script>
+  const correctPassword = "03011995"; // <--- your password
+  let attempts = 3;
+
+  function checkPassword() {
+    const input = document.getElementById("sitePassword").value.trim();
+    const errorMsg = document.getElementById("errorMsg");
+    const attemptsLeft = document.getElementById("attemptsLeft");
+
+    if (input === correctPassword) {
+      document.getElementById("passwordOverlay").style.display = "none";
+    } else {
+      attempts--;
+      if (attempts > 0) {
+        errorMsg.style.display = "block";
+        errorMsg.innerHTML = `Oops! Wrong take 👁👄👁. Try again 🧠.`;
+        attemptsLeft.innerHTML = `${attempts} attempts left 😵`;
+      } else {
+        errorMsg.style.display = "block";
+        errorMsg.innerHTML = `No attempts left 😢. Access denied. Are you a stalker 😏?`;
+        attemptsLeft.style.display = "none";
+        document.getElementById("sitePassword").disabled = true;
+      }
+    }
+  }
+</script>
+
+  
     <!-- 🌐 Language Switcher -->
 <div class="lang-switcher">
   <button onclick="setLanguage('en')" id="btn-en">🇬🇧 EN</button>
@@ -774,6 +866,7 @@ let playFull = true;
   
 </body>
 </html>
+
 
 
 
